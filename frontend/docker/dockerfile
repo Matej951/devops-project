@@ -1,0 +1,31 @@
+# Build stage
+FROM node:18-alpine as builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+# Production stage with Apache
+FROM httpd:2.4-alpine
+
+# Install necessary packages
+RUN apk add --no-cache \
+    openssl \
+    mod_ssl \
+    apache2-utils
+
+# Copy built React files
+COPY --from=builder /app/build/ /usr/local/apache2/htdocs/
+
+# Copy Apache configuration
+COPY apache/httpd.conf /usr/local/apache2/conf/httpd.conf
+COPY apache/extra/ /usr/local/apache2/conf/extra/
+COPY apache/ssl/ /usr/local/apache2/ssl/
+
+# Configure SSL
+RUN mkdir -p /usr/local/apache2/ssl
+COPY ssl/server.crt /usr/local/apache2/ssl/
+COPY ssl/server.key /usr/local/apache2/ssl/
+
+EXPOSE 80 443
