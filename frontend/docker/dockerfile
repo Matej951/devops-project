@@ -1,31 +1,56 @@
 # Build stage
 FROM node:18-alpine as builder
 WORKDIR /app
-COPY package*.json ./
+
+# Copy package files first for better caching
+COPY package.json package-lock.json ./
+
+# Install dependencies
 RUN npm install
-COPY . .
+
+# Copy configuration files
+COPY tailwind.config.js postcss.config.js ./
+
+# Copy source files
+COPY public/ public/
+COPY src/ src/
+
+# Build the application
 RUN npm run build
 
 # Production stage with Apache
 FROM httpd:2.4-alpine
 
 # Install necessary packages
+# Note: mod_ssl is not needed as it's included in httpd
 RUN apk add --no-cache \
     openssl \
-    mod_ssl \
     apache2-utils
 
-# Copy built React files
+# Copy built React files from builder stage to Apache's html directory
 COPY --from=builder /app/build/ /usr/local/apache2/htdocs/
+
+# Create SSL directory
+RUN mkdir -p /usr/local/apache2/ssl
 
 # Copy Apache configuration
 COPY apache/httpd.conf /usr/local/apache2/conf/httpd.conf
-COPY apache/extra/ /usr/local/apache2/conf/extra/
-COPY apache/ssl/ /usr/local/apache2/ssl/
+COPY apache/extra/httpd-ssl.conf /usr/local/apache2/conf/extra/
 
-# Configure SSL
-RUN mkdir -p /usr/local/apache2/ssl
-COPY ssl/server.crt /usr/local/apache2/ssl/
-COPY ssl/server.key /usr/local/apache2/ssl/
+# Copy SSL certificates
+COPY apache/ssl/server.crt /usr/local/apache2/ssl/
+COPY apache/ssl/server.key /usr/local/apache2/ssl/
+
+# Set proper permissions for SSL key
+RUN chmod 600 /usr/local/apache2/ssl/server.key
+
+# Ensure SSL module is enabled
+#RUN sed -i \
+#    -e 's/^#\(LoadModule ssl_module modules\/mod_ssl.so\)/\1/' \
+#    -e 's/^#\(LoadModule socache_shmcb_module modules\/mod_socache_shmcb.so\)/\1/' \
+#    conf/httpd.conf
 
 EXPOSE 80 443
+
+# Run Apache in foreground
+CMD ["httpd", "-D", "FOREGROUND"]
