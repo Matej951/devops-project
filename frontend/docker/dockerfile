@@ -34,12 +34,12 @@ COPY --from=builder /app/build/ /usr/local/apache2/htdocs/
 RUN mkdir -p /usr/local/apache2/ssl
 
 # Copy Apache configuration
-COPY apache/httpd.conf /usr/local/apache2/conf/httpd.conf
-COPY apache/extra/httpd-ssl.conf /usr/local/apache2/conf/extra/
+COPY ../apache/httpd.conf /usr/local/apache2/conf/httpd.conf
+COPY ../apache/extra/httpd-ssl.conf /usr/local/apache2/conf/extra/
 
 # Copy SSL certificates
-COPY apache/ssl/server.crt /usr/local/apache2/ssl/
-COPY apache/ssl/server.key /usr/local/apache2/ssl/
+COPY ../apache/ssl/server.crt /usr/local/apache2/ssl/
+COPY ../apache/ssl/server.key /usr/local/apache2/ssl/
 
 # Set proper permissions for SSL key
 RUN chmod 600 /usr/local/apache2/ssl/server.key
