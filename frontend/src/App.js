@@ -7,10 +7,10 @@ const DevOpsShowcase = () => {
 
   const handleApiTest = async () => {
     try {
-      const response = await fetch('https://your-api-endpoint/test', {
+      const response = await fetch('http://www.devops-showcase-project.ovh:90/api/messages/hello', {
         method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'text/plaintext',
         }
       });
       const data = await response.json();
