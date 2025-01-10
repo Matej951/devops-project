@@ -11,7 +11,6 @@ pipeline {
     stages {
         stage('Build Backend') {
             steps {
-                //dir('backend') {
                     script {
                         withDockerRegistry([credentialsId: 'docker-hub-credentials', url: 'https://${DOCKER_API_URL}']){
                         def backendImage = docker.build("${BE_IMAGE_NAME}:latest", "-f ./frontend/Dockerfile .")
@@ -21,11 +20,9 @@ pipeline {
                     }
                 }
             }
-        }
 
         stage('Build Frontend') {
             steps {
-                //dir('frontend') {
                     script {
                         withDockerRegistry([credentialsId: 'docker-hub-credentials', url: 'https://${DOCKER_REGISTRY}']){
                         def frontendImage = docker.build("${BE_IMAGE_NAME}:latest", "-f ./backend/Dockerfile .")
@@ -36,4 +33,3 @@ pipeline {
             }
         }
     }
-}
