@@ -14,7 +14,6 @@ pipeline {
                 dir('backend') {
                     script {
                         withDockerRegistry([credentialsId: 'docker-hub-credentials', url: 'https://${DOCKER_API_URL}']){
-                        def buildTag = gitCommit.take(7)
                         def backendImage = docker.build("${BE_IMAGE_NAME}:latest", "-f .")
                         // def backendImage = docker.build("${BE_IMAGE_NAME}:${buildTag}", "-f ./backend/.") # takto bych mohl označit image tagem z gitu
                         // backendImage.push() # mohl bych pushnout obraz s default tagem
