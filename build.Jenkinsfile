@@ -4,7 +4,7 @@ pipeline {
     environment {
         FE_IMAGE_NAME = 'matejcihlar/devops-project-frontend'
         BE_IMAGE_NAME = 'matejcihlar/devops-project-backend'
-        VERSION = "${BUILD_NUMBER}"
+        //VERSION = "${BUILD_NUMBER}"
         DOCKER_API_URL = 'index.docker.io/v1/'
     }
 
@@ -13,10 +13,12 @@ pipeline {
             steps {
                 dir('backend') {
                     script {
-                        withDockerRegistry([credentialsId: 'docker-hub-credentials', url: 'https://${DOCKER_API_URL}'])
-                        def backendImage = docker.build("${BE_IMAGE_NAME}:${VERSION}", "-f ./backend/.")
-                        backendImage.push()
-                        backendImage.push('latest')
+                        withDockerRegistry([credentialsId: 'docker-hub-credentials', url: 'https://${DOCKER_API_URL}']){
+                        def buildTag = gitCommit.take(7)
+                        def backendImage = docker.build("${BE_IMAGE_NAME}:latest", "-f .")
+                        // def backendImage = docker.build("${BE_IMAGE_NAME}:${buildTag}", "-f ./backend/.") # takto bych mohl označit image tagem z gitu
+                        // backendImage.push() # mohl bych pushnout obraz s default tagem
+                        backendImage.push('latest') }
                     }
                 }
             }
@@ -26,10 +28,10 @@ pipeline {
             steps {
                 dir('frontend') {
                     script {
-                        withDockerRegistry([credentialsId: 'docker-hub-credentials', url: 'https://${DOCKER_REGISTRY}'])
-                        def frontendImage = docker.build("${BE_IMAGE_NAME}:${VERSION}", "-f ./frontend/.")
-                        frontendImage.push()
-                        frontendImage.push('latest')
+                        withDockerRegistry([credentialsId: 'docker-hub-credentials', url: 'https://${DOCKER_REGISTRY}']){
+                        def frontendImage = docker.build("${BE_IMAGE_NAME}::latest", "-f .")
+                        // frontendImage.push()
+                        frontendImage.push('latest')}
                     }
                 }
             }
