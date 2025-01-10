@@ -21,36 +21,13 @@ RUN npm run build
 # Production stage with Apache
 FROM httpd:2.4-alpine
 
-# Install necessary packages
-# Note: mod_ssl is not needed as it's included in httpd
-RUN apk add --no-cache \
-    openssl \
-    apache2-utils
-
 # Copy built React files from builder stage to Apache's html directory
 COPY --from=builder /app/build/ /usr/local/apache2/htdocs/
 
-# Create SSL directory
-RUN mkdir -p /usr/local/apache2/ssl
-
 # Copy Apache configuration
 COPY apache/conf/* /usr/local/apache2/conf/
-COPY apache/extra/* /usr/local/apache2/conf/extra/
 
-# Copy SSL certificates
-COPY apache/ssl/fullchain.pem /usr/local/apache2/ssl/
-COPY apache/ssl/privkey.pem /usr/local/apache2/ssl/
-
-# Set proper permissions for SSL key
-RUN chmod 600 /usr/local/apache2/ssl/privkey.pem
-
-# Ensure SSL module is enabled
-#RUN sed -i \
-#    -e 's/^#\(LoadModule ssl_module modules\/mod_ssl.so\)/\1/' \
-#    -e 's/^#\(LoadModule socache_shmcb_module modules\/mod_socache_shmcb.so\)/\1/' \
-#    conf/httpd.conf
-
-EXPOSE 80 443
+EXPOSE 80
 
 # Run Apache in foreground
 CMD ["httpd", "-D", "FOREGROUND"]

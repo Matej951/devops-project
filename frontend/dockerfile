@@ -1,32 +1,33 @@
 # Build stage
 FROM node:18-alpine as builder
 WORKDIR /app
-COPY package*.json ./
+
+# Copy package files first for better caching
+COPY package.json ./
+
+# Install dependencies
 RUN npm install
-COPY . .
+
+# Copy configuration files
+COPY tailwind.config.js postcss.config.js ./
+
+# Copy source files
+COPY public/ public/
+COPY src/ src/
+
+# Build the application
 RUN npm run build
 
 # Production stage with Apache
 FROM httpd:2.4-alpine
 
-# Install necessary packages
-RUN apk add --no-cache \
-    openssl \
-    mod_ssl \
-    apache2-utils
-
-# Copy built React files
+# Copy built React files from builder stage to Apache's html directory
 COPY --from=builder /app/build/ /usr/local/apache2/htdocs/
 
 # Copy Apache configuration
-COPY ../apache/conf/ /usr/local/apache2/conf/httpd.conf
-COPY ../apache/extra/ /usr/local/apache2/conf/extra/httpd-ssl.conf
-# COPY apache/ssl/ /usr/local/apache2/ssl/
+COPY apache/conf/* /usr/local/apache2/conf/
 
-# Configure SSL
-RUN mkdir -p /usr/local/apache2/ssl
-COPY ../apache/ssl/* /usr/local/apache2/ssl/
-# COPY apache/ssl/server.crt /usr/local/apache2/ssl/
-# COPY apache/ssl/server.key /usr/local/apache2/ssl/
+EXPOSE 80
 
-EXPOSE 80 443
+# Run Apache in foreground
+CMD ["httpd", "-D", "FOREGROUND"]
