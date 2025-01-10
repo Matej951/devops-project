@@ -13,7 +13,7 @@ pipeline {
             steps {
                     script {
                         withDockerRegistry([credentialsId: 'docker-hub-credentials', url: 'https://${DOCKER_API_URL}']){
-                        def backendImage = docker.build("${BE_IMAGE_NAME}:latest", "-f ./frontend/Dockerfile .")
+                        def backendImage = docker.build("${BE_IMAGE_NAME}:latest", "-f ./frontend/dockerfile .")
                         // def backendImage = docker.build("${BE_IMAGE_NAME}:${buildTag}", "-f ./backend/.") # takto bych mohl označit image tagem z gitu
                         // backendImage.push() # mohl bych pushnout obraz s default tagem
                         backendImage.push('latest') }
@@ -25,7 +25,7 @@ pipeline {
             steps {
                     script {
                         withDockerRegistry([credentialsId: 'docker-hub-credentials', url: 'https://${DOCKER_REGISTRY}']){
-                        def frontendImage = docker.build("${BE_IMAGE_NAME}:latest", "-f ./backend/Dockerfile .")
+                        def frontendImage = docker.build("${BE_IMAGE_NAME}:latest", "-f ./backend/dockerfile .")
                         // frontendImage.push()
                         frontendImage.push('latest')}
                     }
