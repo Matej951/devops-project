@@ -12,8 +12,8 @@ RUN npm install
 COPY tailwind.config.js postcss.config.js ./
 
 # Copy source files
-COPY /frontend/public/ public/
-COPY /frontend/src/ src/
+COPY public/ public/
+COPY src/ src/
 
 # Build the application
 RUN npm run build
