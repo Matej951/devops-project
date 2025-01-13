@@ -3,17 +3,17 @@ FROM node:18-alpine as builder
 WORKDIR /app
 
 # Copy package files first for better caching
-COPY package.json ./
+COPY /frontend/package.json ./
 
 # Install dependencies
 RUN npm install
 
 # Copy configuration files
-COPY tailwind.config.js postcss.config.js ./
+COPY /frontend/tailwind.config.js /frontend/postcss.config.js ./
 
 # Copy source files
-COPY public/ public/
-COPY src/ src/
+COPY /frontend/public/ public/
+COPY /frontend/src/ src/
 
 # Build the application
 RUN npm run build
@@ -25,7 +25,7 @@ FROM httpd:2.4-alpine
 COPY --from=builder /app/build/ /usr/local/apache2/htdocs/
 
 # Copy Apache configuration
-COPY apache/conf/* /usr/local/apache2/conf/
+COPY /frontend/apache/conf/* /usr/local/apache2/conf/
 
 EXPOSE 80
 

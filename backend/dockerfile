@@ -7,10 +7,10 @@ ENV SPRING_PROFILES_ACTIVE=default
 WORKDIR /app
 
 # Copy the Maven project file
-COPY pom.xml .
+COPY /backend/pom.xml .
 
 # Copy the source code
-COPY src ./src
+COPY /backend/src ./src
 
 # Install Maven
 RUN apt-get update && \
