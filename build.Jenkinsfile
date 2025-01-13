@@ -25,7 +25,7 @@ pipeline {
             steps {
                     script {
                         withDockerRegistry([credentialsId: 'docker-hub-credentials', url: 'https://${DOCKER_API_URL}']){
-                        def frontendImage = docker.build("${BE_IMAGE_NAME}:latest", "-f ./frontend/dockerfile .")
+                        def frontendImage = docker.build("${FE_IMAGE_NAME}:latest", "-f ./frontend/dockerfile .")
                         // frontendImage.push()
                         frontendImage.push('latest')}
                     }
