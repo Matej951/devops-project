@@ -1,4 +1,4 @@
-apiVersion: v3
+apiVersion: v2
 name: devops-showcase-backend
 description: Backend service for DevOps showcase project
 type: application
