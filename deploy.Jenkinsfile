@@ -36,7 +36,6 @@ pipeline {
                     sh """
                         helm upgrade --install ${FRONTEND_RELEASE} ./charts/frontend \
                             --namespace ${NAMESPACE} \
-                            --create-namespace \
                             --set image.tag=${VERSION} \
                             --wait \
                             --timeout 5m
