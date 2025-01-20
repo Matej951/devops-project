@@ -19,6 +19,13 @@ pipeline {
             }
         }
 
+        stage('Debug Path') {
+            steps {
+                sh "pwd"
+                sh "ls -l ./charts/frontend"
+            }
+        }
+
         stage('Deploy') {
             steps {
                 withKubeConfig([
