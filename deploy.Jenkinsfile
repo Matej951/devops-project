@@ -9,7 +9,7 @@ pipeline {
         NAMESPACE = 'devops-showcase-project'
         // Image tag
         VERSION = 'latest'
-        CLUSTER_URL = 'https://57.129.134.113:6443'
+        CLUSTER_URL = '57.129.134.113:6443'
     }
 
     stages {
@@ -23,7 +23,7 @@ pipeline {
             steps {
                 withKubeConfig([
                     credentialsId: 'k3s-token',           // ID vašeho credentials v Jenkins
-                    serverUrl: '${CLUSTER_URL}'// URL vašeho K3s serveru
+                    serverUrl: 'https://${CLUSTER_URL}' // URL vašeho K3s serveru
                 ]) {
                     // Deploy Frontend
                     sh """
@@ -51,7 +51,7 @@ pipeline {
             steps {
                 withKubeConfig([
                     credentialsId: 'k3s-token',
-                    serverUrl: '${CLUSTER_URL}'
+                    serverUrl: 'https://${CLUSTER_URL}'
                 ]) {
                     sh """
                         kubectl rollout status deployment/${FRONTEND_RELEASE} -n ${NAMESPACE}
