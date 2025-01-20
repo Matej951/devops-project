@@ -6,5 +6,5 @@ metadata:
     {{- include "backend.labels" . | nindent 4 }}
 data:
   application.properties: |
-    spring.profiles.active=default
+    spring.profiles.active=application
     server.port=90
