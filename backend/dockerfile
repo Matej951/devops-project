@@ -1,7 +1,7 @@
 # Use official OpenJDK base image
 FROM openjdk:17-jdk-slim
 
-ENV SPRING_PROFILES_ACTIVE=default
+ENV SPRING_PROFILES_ACTIVE=application
 
 # Set working directory in the container
 WORKDIR /app
