@@ -22,17 +22,3 @@ spec:
             - containerPort: 90
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          livenessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 90
-              initialDelaySeconds: 60
-              periodSeconds: 10
-              failureThreshold: 3
-          readinessProbe:
-            httpGet:
-              path: /actuator/health
-              port: 90
-              initialDelaySeconds: 60
-              periodSeconds: 10
-              failureThreshold: 3
