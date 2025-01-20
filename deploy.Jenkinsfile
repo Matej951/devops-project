@@ -23,7 +23,7 @@ pipeline {
             steps {
                 withKubeConfig([
                     credentialsId: 'k3s-token',           // ID vašeho credentials v Jenkins
-                    serverUrl: 'https://${CLUSTER_URL}' // URL vašeho K3s serveru
+                    serverUrl: 'https://57.129.134.113:6443' // URL vašeho K3s serveru
                 ]) {
                     // Deploy Frontend
                     sh """
@@ -51,7 +51,7 @@ pipeline {
             steps {
                 withKubeConfig([
                     credentialsId: 'k3s-token',
-                    serverUrl: 'https://${CLUSTER_URL}'
+                    serverUrl: 'https://57.129.134.113:6443'
                 ]) {
                     sh """
                         kubectl rollout status deployment/${FRONTEND_RELEASE} -n ${NAMESPACE}
