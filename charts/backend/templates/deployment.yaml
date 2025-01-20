@@ -20,7 +20,6 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 90
-          env: [ { name: {{ $key }}, value: {{ $value | quote }} } ]
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           livenessProbe:
