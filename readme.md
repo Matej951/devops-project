@@ -58,12 +58,6 @@ The application itself serves as a practical showcase:
 
 4. **Secrets Management**:
     - Sensitive data are securely stored in Jenkins.
----
-
-### How to Run the Project
-1. Clone this repository: `git clone https://github.com/Matej951/devops-project`
-2. Follow the deployment guide in [Documentation Link].
-3. Access the application at `http://localhost` after deployment.
 
 ---
 ## Note
