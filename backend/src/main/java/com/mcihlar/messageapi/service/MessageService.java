@@ -6,6 +6,6 @@ import java.util.UUID;
 @Service
 public class MessageService {
     public String sendMessage(String message) {
-        return "Thanks for your meassage:" + [message]. + "Go checkout 'Source Code' section for the source code of this project which you can find on GitHub!";
+        return "Thanks for your meassage:" + message + "Go checkout 'Source Code' section for the source code of this project which you can find on GitHub!";
     }
 }
