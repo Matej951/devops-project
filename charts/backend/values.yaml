@@ -20,7 +20,7 @@ service:
 
 ingress:
   className: nginx
-  host: "devops-showcase-project.ovh"
+  host: devops-showcase-project.ovh
   paths:
     - path: /api
       pathType: Prefix
