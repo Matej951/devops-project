@@ -29,8 +29,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 withKubeConfig([
-                    credentialsId: 'k3s-token',           // ID vašeho credentials v Jenkins
-                    serverUrl: 'https://57.129.134.113:6443' // URL vašeho K3s serveru
+                    credentialsId: 'k3s-token',
+                    serverUrl: 'https://57.129.134.113:6443'
                 ]) {
                     // Deploy Frontend
                     sh """
@@ -53,6 +53,7 @@ pipeline {
             }
         }
 
+/*
         stage('Verify Deployment') {
             steps {
                 withKubeConfig([
@@ -67,6 +68,7 @@ pipeline {
             }
         }
     }
+ */
 
 /*     post {
         failure {
