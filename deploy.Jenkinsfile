@@ -5,11 +5,10 @@ pipeline {
         // Helm release names
         FRONTEND_RELEASE = 'frontend'
         BACKEND_RELEASE = 'backend'
-        // Namespace v Kubernetes
+        // Namespace in Kubernetes
         NAMESPACE = 'devops-showcase-project'
         // Image tag
         VERSION = 'latest'
-        CLUSTER_URL = '57.129.134.113:6443'
     }
 
     stages {
@@ -52,6 +51,8 @@ pipeline {
                 }
             }
         }
+    }
+}
 
 /*
         stage('Verify Deployment') {
@@ -83,4 +84,3 @@ pipeline {
             }
         }
     } */
-}
