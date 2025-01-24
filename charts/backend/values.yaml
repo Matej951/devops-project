@@ -1,4 +1,4 @@
-fullNameOverride: devops-showcase-backend
+fullnameOverride: devops-showcase-backend
 image:
   repository: matejcihlar/devops-project-backend
   tag: latest
