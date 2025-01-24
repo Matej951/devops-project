@@ -3,8 +3,9 @@ pipeline {
 
     environment {
         // Helm release names
-        FRONTEND_RELEASE = 'frontend'
-        BACKEND_RELEASE = 'backend'
+        FRONTEND_RELEASE = 'devops-showcase-frontend-release'
+        BACKEND_RELEASE = 'devops-showcase-backend-release'
+        INGRESS_RELEASE = 'devops-showcase-ingress-release'
         // Namespace in Kubernetes
         NAMESPACE = 'devops-showcase-project'
         // Image tag
@@ -45,6 +46,14 @@ pipeline {
                         helm upgrade --install ${BACKEND_RELEASE} ./charts/backend \
                             --namespace ${NAMESPACE} \
                             --set image.tag=${VERSION} \
+                            --wait \
+                            --timeout 5m
+                    """
+
+                    // Deploy ingress
+                    sh """
+                        helm upgrade --install ${INGRESS_RELEASE} ./charts/ingress \
+                            --namespace ${NAMESPACE} \
                             --wait \
                             --timeout 5m
                     """
