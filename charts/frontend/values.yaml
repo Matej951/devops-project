@@ -17,18 +17,3 @@ resources:
 service:
   type: ClusterIP
   port: 80
-
-ingress:
-  enabled: true
-  className: nginx
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-  hosts:
-    - host: devops-showcase-project.ovh
-      paths:
-        - path: /
-          pathType: Prefix
-  tls:
-    - secretName: frontend-tls
-      hosts:
-        - devops-showcase-project.ovh

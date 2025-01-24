@@ -1,0 +1,10 @@
+host: devops-showcase-project.ovh
+ingressClassName: nginx
+annotations:
+  cert-manager.io/cluster-issuer: letsencrypt-prod
+
+frontend:
+  servicePort: 80
+
+backend:
+  servicePort: 90
