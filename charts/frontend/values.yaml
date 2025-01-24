@@ -1,8 +1,8 @@
+fullNameOverride: devops-showcase-frontend
 image:
   repository: matejcihlar/devops-project-frontend
   tag: latest
   pullPolicy: Always
-  nameOverride: devops-showcase-frontend
 
 replicaCount: 1
 

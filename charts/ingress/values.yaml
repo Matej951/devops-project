@@ -4,7 +4,9 @@ annotations:
   cert-manager.io/cluster-issuer: letsencrypt-prod
 
 frontend:
+  serviceName: devops-showcase-frontend
   servicePort: 80
 
 backend:
+  serviceName: devops-showcase-backend
   servicePort: 90

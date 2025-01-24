@@ -18,13 +18,13 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ include "backend.fullname" . }}
+                name: {{ .Values.backend.serviceName }}
                 port:
                   number: {{ .Values.backend.servicePort }}
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: {{ include "frontend.fullname" $ }}
+                name: {{ .Values.frontend.serviceName }}
                 port:
                   number: {{ .Values.frontend.servicePort }}
