@@ -26,8 +26,8 @@ ingress:
   hosts:
     - host: devops-showcase-project.ovh
       paths:
-        - path: "^/((?!api).*)$"
-          pathType: ImplementationSpecific
+        - path: /
+          pathType: Prefix
   tls:
     - secretName: frontend-tls
       hosts:

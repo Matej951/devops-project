@@ -33,39 +33,43 @@ const BackgroundImage = () => {
 };
 
 const DevOpsShowcase = () => {
-  const [activeSection, setActiveSection] = useState('overview');
-  const [apiResponse, setApiResponse] = useState('');
-  const [customMessage, setCustomMessage] = useState('');
+  const [activeSection, setActiveSection] = useState('welcome');
+  const [apiTestResponse, setApiTestResponse] = useState(null);
+  const [customMessage, setCustomMessage] = useState(null);
 
-  const handleApiTest = async () => {
-    try {
-      const response = await fetch('http://devops-showcase-project.ovh:90/api/messages/hello', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'text/plaintext',
-        }
-      });
-      const data = await response.json();
-      setApiResponse(data.message);
-    } catch (error) {
-      setApiResponse('Error connecting to API: ' + error.message);
-    }
-  };
+const handleApiTest = async () => {
+  try {
+    const response = await fetch('https://devops-showcase-project.ovh:90/api/messages/hello', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'text/plaintext',
+      }
+    });
+    const data = await response.json();
+    setApiTestResponse(data.message);
+    // Clear custom message response
+    setCustomMessage(null);
+  } catch (error) {
+    setApiTestResponse('Error connecting to API: ' + error.message);
+  }
+};
 
-  const handleCustomMessage = async () => {
-    try {
-      const response = await fetch(`http://devops-showcase-project.ovh:90/api/send/${customMessage}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'text/plaintext',
-        }
-      });
-      const data = await response.json();
-      setApiResponse(data.message);
-    } catch (error) {
-      setApiResponse('Error connecting to API: ' + error.message);
-    }
-  };
+const handleCustomMessage = async () => {
+  try {
+    const response = await fetch(`https://devops-showcase-project.ovh:90/api/send/${customMessage}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'text/plaintext',
+      }
+    });
+    const data = await response.json();
+    setCustomMessage(data.message);
+    // Clear API test response
+    setApiTestResponse(null);
+  } catch (error) {
+    setCustomMessage('Error connecting to API: ' + error.message);
+  }
+};
 
   return (
     <div className="min-h-screen relative">
@@ -90,7 +94,7 @@ const DevOpsShowcase = () => {
         <div className="container mx-auto px-4">
           <div className="flex justify-center py-4">
             <div className="inline-flex space-x-1 bg-black/70 p-1 rounded-full">
-              {['overview', 'infrastructure', 'pipeline', 'security', 'monitoring', 'api test', 'source code'].map((section) => (
+              {['welcome','overview', 'infrastructure', 'pipeline', 'security', 'monitoring', 'source code'].map((section) => (
                 <button
                   key={section}
                   onClick={() => setActiveSection(section)}
@@ -109,7 +113,7 @@ const DevOpsShowcase = () => {
       </nav>
 
       <main className="container mx-auto px-4 py-8 relative z-10">
-        <div className="max-w-4xl mx-auto text-white min-h-[600px]"> {/* Přidaná minimální výška */}
+        <div className="max-w-4xl mx-auto text-white min-h-[600px]"> {}
           {activeSection === 'overview' && (
             <div className="backdrop-blur-sm bg-black/70 p-8 rounded-lg">
               <h2 className="text-3xl font-bold mb-6">Tech Stack</h2>
@@ -267,54 +271,59 @@ const DevOpsShowcase = () => {
             </div>
           )}
 
-          {activeSection === 'api test' && (
-            <div className="space-y-8">
-              <div className="backdrop-blur-sm bg-black/70 p-8 rounded-lg">
-                <div className="flex flex-col items-center space-y-6">
-                  <Terminal size={64} className="text-white" />
-                  <h2 className="text-3xl font-bold">API Testing</h2>
+            {activeSection === 'welcome' && (
+              <div className="space-y-8">
+                <div className="backdrop-blur-sm bg-black/70 p-8 rounded-lg">
+                  <div className="flex flex-col items-center space-y-6">
+                    <Terminal size={64} className="text-white" />
+                    <h2 className="text-3xl font-bold text-purple-600">Welcome to my DevOps Showcase project</h2>
+                    <h3 className="text-xl font-semibold text-center">Please follow the instructions below to navigate yourself through the page</h3>
 
-                  <div className="space-y-6 w-full max-w-md">
-                    <div className="space-y-4">
-                      <h3 className="text-xl font-semibold text-center">Test Default Endpoint</h3>
-                      <button
-                        onClick={handleApiTest}
-                        className="w-full bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors"
-                      >
-                        Test Default API
-                      </button>
-                    </div>
-
-                    <div className="space-y-4">
-                      <h3 className="text-xl font-semibold text-center">Test Custom Message</h3>
-                      <div className="flex space-x-2">
-                        <input
-                          type="text"
-                          value={customMessage}
-                          onChange={(e) => setCustomMessage(e.target.value)}
-                          placeholder="Enter custom message"
-                          className="flex-1 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-purple-500"
-                        />
+                    <div className="space-y-6 w-full max-w-md">
+                      <div className="space-y-4">
                         <button
-                          onClick={handleCustomMessage}
-                          className="bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors"
+                          onClick={handleApiTest}
+                          className="w-full bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors"
                         >
-                          Send
+                          Click me 1st!
                         </button>
+                        {apiTestResponse && (
+                          <div className="mt-6 p-4 bg-black/40 rounded-lg">
+                            <h3 className="text-lg font-semibold mb-2">API Test Response:</h3>
+                            <p className="font-mono">{apiTestResponse}</p>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="space-y-4">
+                        <h3 className="text-xl font-semibold text-center">Write your message to the field below</h3>
+                        <div className="flex space-x-2">
+                          <input
+                            type="text"
+                            value={customMessage}
+                            onChange={(e) => setCustomMessage(e.target.value)}
+                            placeholder="Enter custom message"
+                            className="flex-1 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-purple-500"
+                          />
+                          <button
+                            onClick={handleCustomMessage}
+                            className="bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors"
+                          >
+                            Send
+                          </button>
+                        </div>
+                        {customMessage && (
+                          <div className="mt-6 p-4 bg-black/40 rounded-lg">
+                            <h3 className="text-lg font-semibold mb-2">Custom Message Response:</h3>
+                            <p className="font-mono">{customMessage}</p>
+                          </div>
+                        )}
                       </div>
                     </div>
-
-                    {apiResponse && (
-                      <div className="mt-6 p-4 bg-black/40 rounded-lg">
-                        <h3 className="text-lg font-semibold mb-2">Response:</h3>
-                        <p className="font-mono">{apiResponse}</p>
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
 
           {activeSection === 'source code' && (
             <div className="space-y-8">
