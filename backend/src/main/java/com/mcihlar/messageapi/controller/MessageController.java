@@ -19,6 +19,6 @@ public class MessageController {
 
     @GetMapping("/hello")
     public String hello() {
-        return "Message API is running, now try to write some text into the input field!";
+        return "Perfect, the API is working! Now please enter your message to the field below to get the instructions.";
     }
 }
