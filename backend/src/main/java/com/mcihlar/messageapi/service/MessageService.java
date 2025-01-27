@@ -6,6 +6,6 @@ import java.util.UUID;
 @Service
 public class MessageService {
     public String sendMessage(String message) {
-        return "Thanks for your message: " + message + ". (Unique message ID is: " + UUID.randomUUID() + "). Now please go through the different tabs to learn about this project, its tech stack, security and monitoring. You can then find the whole source code in the 'Source code' tab.";
+        return "Thanks for your message: " + message + ". (Your unique message ID is: " + UUID.randomUUID() + "). Now please go through the different tabs to learn more about this project. You can then find the source code link in the 'Source code' tab.";
     }
 }
