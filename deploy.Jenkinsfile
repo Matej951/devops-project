@@ -8,7 +8,6 @@ pipeline {
         INGRESS_RELEASE = 'devops-showcase-ingress-release'
         // Namespace in Kubernetes
         NAMESPACE = 'devops-showcase-project'
-        // Image tag
         VERSION = 'latest'
     }
 
@@ -19,18 +18,11 @@ pipeline {
             }
         }
 
-        stage('Debug Path') {
-            steps {
-                sh "pwd"
-                sh "ls -l ./charts/frontend"
-            }
-        }
-
         stage('Deploy') {
             steps {
                 withKubeConfig([
                     credentialsId: 'k3s-token',
-                    serverUrl: 'https://57.129.134.113:6443'
+                    serverUrl: 'k3s-server-url'
                 ]) {
                     // Deploy Frontend
                     sh """
@@ -62,34 +54,3 @@ pipeline {
         }
     }
 }
-
-/*
-        stage('Verify Deployment') {
-            steps {
-                withKubeConfig([
-                    credentialsId: 'k3s-token',
-                    serverUrl: 'https://57.129.134.113:6443'
-                ]) {
-                    sh """
-                        kubectl rollout status deployment/${FRONTEND_RELEASE} -n ${NAMESPACE}
-                        kubectl rollout status deployment/${BACKEND_RELEASE} -n ${NAMESPACE}
-                    """
-                }
-            }
-        }
-    }
- */
-
-/*     post {
-        failure {
-            withKubeConfig([
-                credentialsId: 'k3s-token',
-                serverUrl: 'https://vas-k3s-server:6443'
-            ]) {
-                sh """
-                    helm rollback ${FRONTEND_RELEASE} -n ${NAMESPACE}
-                    helm rollback ${BACKEND_RELEASE} -n ${NAMESPACE}
-                """
-            }
-        }
-    } */
