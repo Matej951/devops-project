@@ -22,7 +22,7 @@ pipeline {
             steps {
                 withKubeConfig([
                     credentialsId: 'k3s-token',
-                    serverUrl: 'k3s-server-url'
+                    serverUrl: k3s-server-url
                 ]) {
                     // Deploy Frontend
                     sh """
