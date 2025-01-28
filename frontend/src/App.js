@@ -33,6 +33,7 @@ const BackgroundImage = () => {
 
 const DevOpsShowcase = () => {
   const [activeSection, setActiveSection] = useState('welcome');
+  const [inputMessage, setInputMessage] = useState('');
   const [apiTestResponse, setApiTestResponse] = useState(null);
   const [customMessage, setCustomMessage] = useState(null);
   const [expandedCard, setExpandedCard] = useState(null);
@@ -45,10 +46,10 @@ const handleApiTest = async () => {
         'Content-Type': 'text/plaintext',
       }
     });
-    const data = await response.json();
+    const data = await response.text();
     setApiTestResponse(data.message);
     // Clear custom message response
-    setCustomMessage(null);
+    setApiTestResponse(null);
   } catch (error) {
     setApiTestResponse('Error connecting to API: ' + error.message);
   }
@@ -56,13 +57,13 @@ const handleApiTest = async () => {
 
 const handleCustomMessage = async () => {
   try {
-    const response = await fetch(`https://devops-showcase-project.ovh/api/send/${customMessage}`, {
+    const response = await fetch(`https://devops-showcase-project.ovh/api/send/${inputMessage}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'text/plaintext',
       }
     });
-    const data = await response.json();
+    const data = await response.text();
     setCustomMessage(data.message);
     // Clear API test response
     setApiTestResponse(null);
@@ -319,8 +320,8 @@ const handleCustomMessage = async () => {
                         <div className="flex space-x-2">
                           <input
                             type="text"
-                            value={customMessage}
-                            onChange={(e) => setCustomMessage(e.target.value)}
+                            value={inputMessage}
+                            onChange={(e) => setInputMessage(e.target.value)}
                             placeholder="Enter custom message"
                             className="flex-1 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-purple-500"
                           />
