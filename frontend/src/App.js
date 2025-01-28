@@ -14,7 +14,7 @@ const DevOpsIcon = () => (
       <Settings className="w-20 h-20 text-white opacity-20" />
     </div>
     <div className="absolute inset-0 flex items-center justify-center">
-      <Cpu className="w-10 h-10 text-purple-500" />
+      <Cpu className="w-10 h-10 text-purple-600" />
     </div>
   </div>
 );
