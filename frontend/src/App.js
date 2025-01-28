@@ -38,39 +38,46 @@ const DevOpsShowcase = () => {
   const [customMessage, setCustomMessage] = useState(null);
   const [expandedCard, setExpandedCard] = useState(null);
 
-const handleApiTest = async () => {
-  try {
-    const response = await fetch('https://devops-showcase-project.ovh/api/messages/hello', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'text/plaintext',
-      }
-    });
-    const data = await response.text();
-    setApiTestResponse(data.message);
-    // Clear custom message response
-    setApiTestResponse(null);
-  } catch (error) {
-    setApiTestResponse('Error connecting to API: ' + error.message);
-  }
-};
+  const handleApiTest = async () => {
+    try {
+      const response = await fetch('https://devops-showcase-project.ovh/api/messages/hello', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'text/plaintext',
+        }
+      });
 
-const handleCustomMessage = async () => {
-  try {
-    const response = await fetch(`https://devops-showcase-project.ovh/api/send/${inputMessage}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'text/plaintext',
-      }
-    });
-    const data = await response.text();
-    setCustomMessage(data.message);
-    // Clear API test response
-    setApiTestResponse(null);
-  } catch (error) {
-    setCustomMessage('Error connecting to API: ' + error.message);
-  }
-};
+      const text = await response.text();
+      setApiTestResponse(text);
+      // Clear custom message response
+      setCustomMessage(null);
+    } catch (error) {
+      setApiTestResponse('Error connecting to API: ' + error.message);
+    }
+  };
+
+  const handleCustomMessage = async () => {
+    if (!inputMessage.trim()) {
+      setCustomMessage('Please enter a message');
+      return;
+    }
+
+    try {
+      const response = await fetch(`https://devops-showcase-project.ovh/api/messages/send/${inputMessage}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plaintext',
+        }
+      });
+
+      const text = await response.text();
+      setCustomMessage(text);
+      // Clear API test response
+      setApiTestResponse(null);
+    } catch (error) {
+      setCustomMessage('Error connecting to API: ' + error.message);
+    }
+  };
 
   return (
     <div className="min-h-screen relative">
@@ -300,43 +307,43 @@ const handleCustomMessage = async () => {
                       <ChevronDown className="w-6 h-6" />
                     </h3>
                     <div className="space-y-6 w-full max-w-md">
-                      <div className="space-y-4">
-                        <button
-                          onClick={handleApiTest}
-                          className="w-full bg-purple-700 text-white px-6 py-2 rounded-full hover:bg-purple-800 transition-colors"
-                        >
-                          Click here to start!
-                        </button>
-                        {apiTestResponse && (
-                          <div className="mt-6 p-4 bg-black/40 rounded-lg">
-                            <h3 className="text-lg font-semibold mb-2">API Test Response:</h3>
-                            <p className="font-mono">{apiTestResponse}</p>
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="space-y-4">
-                        <h3 className="text-xl font-semibold text-center">Write your message to the field below</h3>
-                        <div className="flex space-x-2">
-                          <input
-                            type="text"
-                            value={inputMessage}
-                            onChange={(e) => setInputMessage(e.target.value)}
-                            placeholder="Enter custom message"
-                            className="flex-1 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-purple-500"
-                          />
-                          <button
-                            onClick={handleCustomMessage}
-                            className="bg-purple-700 text-white px-6 py-2 rounded-full hover:bg-purple-800 transition-colors"
-                          >
-                            Send
-                          </button>
+                    <div className="space-y-4">
+                      <button
+                        onClick={handleApiTest}
+                        className="bg-purple-700 text-white px-6 py-2 rounded-full hover:bg-purple-800 transition-colors"
+                      >
+                        Click here to start!
+                      </button>
+                      {apiTestResponse && (
+                        <div className="mt-6 p-4 bg-black/40 rounded-lg">
+                          <h3 className="text-lg font-semibold mb-2">API Test Response:</h3>
+                          <p className="font-mono">{apiTestResponse}</p>
                         </div>
-                        {customMessage && (
-                          <div className="mt-6 p-4 bg-black/40 rounded-lg">
-                            <h3 className="text-lg font-semibold mb-2">Custom Message Response:</h3>
-                            <p className="font-mono">{customMessage}</p>
-                          </div>
+                      )}
+                    </div>
+
+                    <div className="space-y-4">
+                      <h3 className="text-xl font-semibold text-center">Write your message to the field below</h3>
+                      <div className="flex space-x-2">
+                        <input
+                          type="text"
+                          value={inputMessage}
+                          onChange={(e) => setInputMessage(e.target.value)}
+                          placeholder="Enter custom message"
+                          className="flex-1 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:border-purple-500"
+                        />
+                        <button
+                          onClick={handleCustomMessage}
+                          className="bg-purple-700 text-white px-6 py-2 rounded-full hover:bg-purple-800 transition-colors"
+                        >
+                          Send
+                        </button>
+                      </div>
+                      {customMessage && (
+                        <div className="mt-6 p-4 bg-black/40 rounded-lg">
+                          <h3 className="text-lg font-semibold mb-2">Custom Message Response:</h3>
+                          <p className="font-mono">{customMessage}</p>
+                        </div>
                         )}
                       </div>
                     </div>
