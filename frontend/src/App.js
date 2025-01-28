@@ -49,7 +49,7 @@ const DevOpsShowcase = () => {
 
       const text = await response.text();
       setApiTestResponse(text);
-      // Clear custom message response
+      // Clear api test message response
       setCustomMessage(null);
     } catch (error) {
       setApiTestResponse('Error connecting to API: ' + error.message);
@@ -63,16 +63,17 @@ const DevOpsShowcase = () => {
     }
 
     try {
-      const response = await fetch(`https://devops-showcase-project.ovh/api/messages/send/${inputMessage}`, {
+      const response = await fetch('https://devops-showcase-project.ovh/api/messages/send', {
         method: 'POST',
         headers: {
-          'Content-Type': 'text/plaintext',
-        }
+          'Content-Type': 'text/plain',
+        },
+        body: inputMessage
       });
 
       const text = await response.text();
       setCustomMessage(text);
-      // Clear API test response
+      // Clear custom message test response
       setApiTestResponse(null);
     } catch (error) {
       setCustomMessage('Error connecting to API: ' + error.message);
@@ -310,7 +311,7 @@ const DevOpsShowcase = () => {
                     <div className="space-y-4">
                       <button
                         onClick={handleApiTest}
-                        className="bg-purple-700 text-white px-6 py-2 rounded-full hover:bg-purple-800 transition-colors"
+                        className="w-full bg-purple-700 text-white px-6 py-2 rounded-full hover:bg-purple-800 transition-colors"
                       >
                         Click here to start!
                       </button>
