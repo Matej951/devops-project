@@ -103,7 +103,7 @@ const DevOpsShowcase = () => {
         <div className="container mx-auto px-4">
           <div className="flex justify-center py-4">
             <div className="inline-flex space-x-1 bg-black/70 p-1 rounded-full">
-              {['welcome','overview', 'pipeline', 'security', 'monitoring', 'source code'].map((section) => (
+              {['welcome','overview', 'pipeline', 'monitoring', 'source code'].map((section) => (
                 <button
                   key={section}
                   onClick={() => setActiveSection(section)}
